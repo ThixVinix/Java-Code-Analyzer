@@ -14,7 +14,6 @@ public class ListenerDefinirEntidadesDeus implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (tela.checkBoxEntidadeDeus.isSelected()) {
 			tela.campoLimiteMetodoDeus.setText("");

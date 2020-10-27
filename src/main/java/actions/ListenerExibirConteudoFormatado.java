@@ -13,7 +13,6 @@ public class ListenerExibirConteudoFormatado implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (tela.radioButtonConteudoFormatado.isSelected()) {
 			tela.radioButtonConteudoFormatado.setEnabled(false);

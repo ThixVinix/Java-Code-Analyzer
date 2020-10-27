@@ -15,7 +15,6 @@ public class ListenerLimpar implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		tela.botaoLimpar.setEnabled(false);
 		tela.comboBoxGrafico.setSelectedIndex(0);

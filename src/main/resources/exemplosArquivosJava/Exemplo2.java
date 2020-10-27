@@ -1,10 +1,10 @@
-package testesArquivos;
+package exemplosArquivosJava;
 
-public abstract class Teste2 {
+public abstract class Exemplo2 {
 
 	public int variavelGlobal1 = 1;
 	
-	public Teste2() {
+	public Exemplo2() {
 		
 		String variavelLocal1 = " /* "; // I see her face... 
 		System.out.println(" /* "); /* Diamond 2
