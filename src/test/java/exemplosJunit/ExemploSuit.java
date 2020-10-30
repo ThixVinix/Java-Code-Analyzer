@@ -1,18 +1,34 @@
 package exemplosJunit;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
-/*Test Suites:
+/**
+ * <h1>Extensões para o "@ExtendWith":</h1>
+ * <ul>
+ * <li>{@link ExecutionCondition.class}</li>
+ * <li>{@link BeforeAllCallback.class}</li>
+ * <li>{@link AfterAllCallback.class}</li>
+ * <li>{@link BeforeEachCallback.class}</li>
+ * <li>{@link AfterEachCallback.class}</li>
+ * <li>{@link AfterEachCallback.class}</li>
+ * <li>{@link BeforeTestExecutionCallback.class}</li>
+ * <li>{@link AfterTestExecutionCallback.class}</li>
+ * <li>{@link TestInstancePostProcessor.class}</li>
+ * <li>{@link ParameterResolver.class}</li>
+ * <li>{@link TestExecutionExceptionHandler.class}</li>
+ * </ul>
+ * <p>
+ * Podem ser utilizadas mais de uma extensão, basta repetir o "@ExtendWith".
+ * </p>
  * 
- * Test suites agrupam diversos "test cases" de classes de testes existentes no projeto.
+ * <p>
+ * Adiciona comportamento à execução dos testes.
+ * </p>
  * 
- * Facilitam a execução. Pois executam todas as classes de teste declaradas no "@SuiteClasses".
- * 
- * Não há necessidade de implementação para a classe "Suit"*/
-@RunWith(Suite.class)
-@SuiteClasses({ ExemploCasosJunit.class })
+ * <p>
+ * Podem ser usada a nível de classe ou método.
+ * </p>
+ */
+//@RunWith(Suite.class)
+//@SuiteClasses({ ArquivoMetricaBeanTest.class })
 public class ExemploSuit {
 
 }

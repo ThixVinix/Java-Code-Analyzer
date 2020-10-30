@@ -1,34 +1,36 @@
 package exemplosJunit;
 
-import static org.junit.Assert.fail;
+import static java.time.Duration.ofMillis;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ExemploCasosJunit {
 
 	/** Equivalente à 10 segundos (tempo em milisegundos) */
-	private static final long TEMPO_LIMITE_EXECUCAO = 10000l;
+//	private static final long TEMPO_LIMITE_EXECUCAO = 10000l;
 
 	/**
-	 * A anotação "@BeforeClass" é executada antes dos testes da classe serem
+	 * A anotação "@BeforeAll" é executada antes dos testes da classe serem
 	 * executados.
 	 * 
 	 * Este método pode inicializar recursos necessários para realiação dos testes.
 	 * 
 	 * O método deve ser public, static, void e sem parâmetros.
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void inicializar() {
 		// Inicialização de recursos.
 	}
 
 	/**
-	 * A anotação "@AfterClass" é usada no método que deve ser executado depois dos
+	 * A anotação "@AfterAll" é usada no método que deve ser executado depois dos
 	 * testes da classe serem executados.
 	 * 
 	 * Este método pode destruir recursos abertos pelo método anotado com
@@ -36,31 +38,31 @@ public class ExemploCasosJunit {
 	 * 
 	 * O método dever public, static, void e sem parâmetros.
 	 */
-	@AfterClass
+	@AfterAll
 	public static void destruir() {
 		// Destruição de recursos.
 	}
 
 	/**
-	 * Método anotas com "@Before" são executados toda vez que um novo teste da
+	 * Método anotas com "@BeforeEach" são executados toda vez que um novo teste da
 	 * classe está prestes a ser executado.
 	 * 
 	 * O método deve ser public, void e sem parâmetros
 	 */
-	@Before
-	public static void executarAntesDoTeste() {
+	@BeforeEach
+	public void executarAntesDoTeste() {
 		// Inicialização antes de executar cada teste.
 		System.out.println("Iniciando o teste");
 	}
 
 	/**
-	 * Método anotas com "@After" são executados toda vez que um novo teste da
+	 * Método anotas com "@AfterEach" são executados toda vez que um novo teste da
 	 * classe termina de ser executado.
 	 * 
 	 * O método deve ser public, void e sem parâmetros
 	 */
-	@After
-	public static void executarDepoisDoTeste() {
+	@AfterEach
+	public void executarDepoisDoTeste() {
 		// Destruição depois de executar cada teste.
 		System.out.println("Teste finalizado");
 	}
@@ -70,45 +72,42 @@ public class ExemploCasosJunit {
 		fail("Not yet implemented");
 	}
 
-	@Test(expected = Exception.class)
-	public void test1() {
-		fail("Not yet implemented");
-	}
-
 	/**
 	 * Se o método deve lançar uma exceção, deve especificar qual exceção é essa.
 	 * 
 	 * Se a exceção especificada não for lançada, o método falha.
 	 */
-	@Test(expected = Exception.class)
-	public void test2() {
-		fail("Not yet implemented");
+//	@Test(expected = Exception.class)
+	public void test2() throws Exception {
+		throw new Exception();
 	}
 
 	/**
 	 * Indica quanto tempo o método pode levar para executar no máximo. Se este
 	 * tempo for ultrapassado, o teste falha.
 	 */
-	@Test(timeout = TEMPO_LIMITE_EXECUCAO)
+	@Test
 	public void test3() {
-		fail("Not yet implemented");
+		assertTimeout(ofMillis(10), () -> {
+			Thread.sleep(100);
+		});
 	}
 
-	@Test(expected = Exception.class, timeout = TEMPO_LIMITE_EXECUCAO)
+//	@Test(expected = Exception.class, timeout = TEMPO_LIMITE_EXECUCAO)
 	public void test4() {
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Ignora o caso de teste em específico temporariamente. o {@code @Ignore}
+	 * Ignora o caso de teste em específico temporariamente. o {@code @Disabled}
 	 * também pode ser utilizado na classe de testes.
 	 */
 	@Test
-	@Ignore
+	@Disabled
 	public void test5() {
 		fail("Not yet implemented");
 	}
-	
+
 	/**
 	 * Funcionalidades:
 	 * 

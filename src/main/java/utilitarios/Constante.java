@@ -29,6 +29,8 @@ public class Constante {
 	public static final String ABRE_CHAVES = "{";
 	public static final String FECHA_CHAVES = "}";
 	public static final String PONTO_VIRGULA = ";";
+	public static final String VAZIO = "";
+	public static final String QUEBRA_LINHA = "\n";
 	public static final String OVERRIDE = "@Override";
 	public static final String ABSTRACT = "abstract";
 	public static final String URL_EXEMPLO = "https://raw.githubusercontent.com/junyanz/pytorch-CycleGAN-and-pix2pix/master/train.py";
