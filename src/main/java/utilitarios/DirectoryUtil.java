@@ -2,6 +2,7 @@ package utilitarios;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,6 +10,18 @@ import java.nio.file.Paths;
 public class DirectoryUtil {
 
 	private DirectoryUtil() {
+	}
+	
+	public static File criarArquivo(String pathFileString) throws IOException {
+		File file = new File(pathFileString);
+		try {
+			if (!file.createNewFile()) {
+				throw new IOException();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return file;
 	}
 
 	/**
@@ -74,7 +87,7 @@ public class DirectoryUtil {
 		File arquivo;
 
 		try {
-			arquivo = new File(caminho.toFile().toString());
+			arquivo = caminho.toFile();
 		} catch (Exception e) {
 			arquivo = null;
 		}

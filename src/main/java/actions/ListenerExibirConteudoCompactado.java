@@ -13,7 +13,6 @@ public class ListenerExibirConteudoCompactado implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (tela.radioButtonConteudoCompactado.isSelected()) {
 			tela.radioButtonConteudoCompactado.setEnabled(false);

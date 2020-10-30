@@ -24,6 +24,7 @@ import utilitarios.Util;
 public class ArquivoMetricaBean implements Serializable {
 
 	private static final long serialVersionUID = -1433406600601635150L;
+	private static final int NUMBER_ZERO = 0;
 	private int qtdLinhasDeCodigo;
 	private int qtdClasses;
 	private int qtdMetodos;
@@ -38,24 +39,15 @@ public class ArquivoMetricaBean implements Serializable {
 
 	public ArquivoMetricaBean() {
 		arquivoPesquisado = new ArquivoMetrica();
-		arquivoPesquisado.setQtdLoc(0);
-		arquivoPesquisado.setQtdClasseDeus(0);
-		arquivoPesquisado.setQtdMetodos(0);
-		arquivoPesquisado.setQtdComentarios(0);
-		arquivoPesquisado.setQtdClasseDeus(0);
-		arquivoPesquisado.setQtdMetodoDeus(0);
+		arquivoPesquisado.setQtdLoc(NUMBER_ZERO);
+		arquivoPesquisado.setQtdClasseDeus(NUMBER_ZERO);
+		arquivoPesquisado.setQtdMetodos(NUMBER_ZERO);
+		arquivoPesquisado.setQtdComentarios(NUMBER_ZERO);
+		arquivoPesquisado.setQtdClasseDeus(NUMBER_ZERO);
+		arquivoPesquisado.setQtdMetodoDeus(NUMBER_ZERO);
 	}
 
 	public void salvarMetricas() {
-
-		if (Util.isNotNullOrEmpty(conteudoCompleto.toString()))
-			arquivoPesquisado.setConteudoCompleto(conteudoCompleto.toString());
-
-		if (Util.isNotNullOrEmpty(conteudoFormatado.toString()))
-			arquivoPesquisado.setConteudoFormatado(conteudoFormatado.toString());
-
-		if (Util.isNotNullOrEmpty(conteudoCompactado.toString()))
-			arquivoPesquisado.setConteudoCompactado(conteudoCompactado.toString());
 
 		if (Util.isNotNullOrZeroNumber(qtdLinhasDeCodigo))
 			arquivoPesquisado.setQtdLoc(qtdLinhasDeCodigo);
@@ -75,14 +67,32 @@ public class ArquivoMetricaBean implements Serializable {
 		if (Util.isNotNullOrZeroNumber(qtdClasseDeus))
 			arquivoPesquisado.setQtdClasseDeus(qtdClasseDeus);
 
+		if (Util.isNotNullOrEmpty(conteudoCompleto)) {
+			arquivoPesquisado.setConteudoCompleto(conteudoCompleto.toString());
+		} else {
+			arquivoPesquisado.setConteudoCompleto("");
+		}
+
+		if (Util.isNotNullOrEmpty(conteudoFormatado))
+			arquivoPesquisado.setConteudoFormatado(conteudoFormatado.toString());
+		else {
+			arquivoPesquisado.setConteudoFormatado("");
+		}
+
+		if (Util.isNotNullOrEmpty(conteudoCompactado))
+			arquivoPesquisado.setConteudoCompactado(conteudoCompactado.toString());
+		else {
+			arquivoPesquisado.setConteudoCompactado("");
+		}
+
 	}
 
 	public ValidacaoArquivoEnum validarDiretorio(String diretorioString) {
 
-		if (Util.isNullOrEmpty(diretorioString.trim()))
+		if (Util.isNullOrEmpty(diretorioString))
 			return ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_DIRETORIO;
 
-		Path caminho = DirectoryUtil.obterPathPeloDiretorioString(diretorioString);
+		Path caminho = DirectoryUtil.obterPathPeloDiretorioString(diretorioString.trim());
 
 		if (Util.isNullOrEmpty(caminho))
 			return ValidacaoArquivoEnum.ERRO_CONVERSAO_DIRETORIO;
@@ -99,10 +109,10 @@ public class ArquivoMetricaBean implements Serializable {
 	public ValidacaoArquivoEnum validarCamposEntidadesDeusas(String qtdMinMetodoDeusString,
 			String qtdMinClasseDeusString) {
 
-		if (Util.isNullOrEmpty(qtdMinMetodoDeusString.trim()))
+		if (Util.isNullOrEmpty(qtdMinMetodoDeusString))
 			return ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_METODO_DEUS;
 
-		if (Util.isNullOrEmpty(qtdMinClasseDeusString.trim()))
+		if (Util.isNullOrEmpty(qtdMinClasseDeusString))
 			return ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_CLASSE_DEUS;
 
 		if (!Util.isNumerico(qtdMinMetodoDeusString.trim()))
@@ -117,6 +127,15 @@ public class ArquivoMetricaBean implements Serializable {
 	public void lerConteudoArquivoAlvo(File arquivo, Integer limiteMinMetodoDeus, Integer limiteMinClasseDeus)
 			throws IOException {
 
+		if (Util.isNullOrEmpty(arquivo))
+			return;
+
+		if (Util.isNullOrEmpty(limiteMinMetodoDeus) || limiteMinMetodoDeus < 0)
+			limiteMinMetodoDeus = NUMBER_ZERO;
+
+		if (Util.isNullOrEmpty(limiteMinClasseDeus) || limiteMinClasseDeus < 0)
+			limiteMinClasseDeus = NUMBER_ZERO;
+
 		FileInputStream stream;
 
 		stream = new FileInputStream(arquivo);
@@ -130,11 +149,11 @@ public class ArquivoMetricaBean implements Serializable {
 		conteudoCompactado = new StringBuilder();
 		conteudoFormatado = new StringBuilder();
 		while ((line = br.readLine()) != null) {
-			conteudoCompleto.append(line + "\n");
+			conteudoCompleto.append(line + Constante.QUEBRA_LINHA);
 
-			if (line.trim().equals("")) {
-				if (!oldLine.trim().equals("")) {
-					conteudoFormatado.append(line + "\n");
+			if (line.trim().equals(Constante.VAZIO)) {
+				if (!oldLine.trim().equals(Constante.VAZIO)) {
+					conteudoFormatado.append(line + Constante.QUEBRA_LINHA);
 				}
 				continue;
 			}
@@ -146,9 +165,9 @@ public class ArquivoMetricaBean implements Serializable {
 			String newLine = removerComentariosAposCodigo(line);
 			if (!newLine.equals(line)) {
 				line = newLine;
-				if (line.trim().equals("")) {
-					if (!oldLine.trim().equals("")) {
-						conteudoFormatado.append(line + "\n");
+				if (line.trim().equals(Constante.VAZIO)) {
+					if (!oldLine.trim().equals(Constante.VAZIO)) {
+						conteudoFormatado.append(line + Constante.QUEBRA_LINHA);
 					}
 					continue;
 				}
@@ -158,8 +177,8 @@ public class ArquivoMetricaBean implements Serializable {
 			verificarQtdMetodos(line, oldLine);
 			verificarQtdClasses(line);
 
-			conteudoCompactado.append(line + "\n");
-			conteudoFormatado.append(line + "\n");
+			conteudoCompactado.append(line + Constante.QUEBRA_LINHA);
+			conteudoFormatado.append(line + Constante.QUEBRA_LINHA);
 
 			qtdLinhasDeCodigo++;
 			oldLine = line;
@@ -206,7 +225,7 @@ public class ArquivoMetricaBean implements Serializable {
 				|| (line.contains(Constante.COMENTARIO_SIMPLES)
 						&& !line.trim().startsWith(Constante.COMENTARIO_SIMPLES))) {
 			StringBuilder sb = new StringBuilder();
-			int countAspas = 0;
+			int countAspas = NUMBER_ZERO;
 
 			for (int i = 0; i < line.trim().length(); i++) {
 
@@ -215,15 +234,15 @@ public class ArquivoMetricaBean implements Serializable {
 					countAspas++;
 				}
 
-				if (line.trim().charAt(i) == Constante.ASPAS_DUPLAS && countAspas == 0) {
+				if (line.trim().charAt(i) == Constante.ASPAS_DUPLAS && countAspas == NUMBER_ZERO) {
 					countAspas++;
 				}
 
 				if (countAspas == 2) {
-					countAspas = 0;
+					countAspas = NUMBER_ZERO;
 				}
 
-				if (line.trim().charAt(i) == Constante.BARRA && countAspas == 0) {
+				if (line.trim().charAt(i) == Constante.BARRA && countAspas == NUMBER_ZERO) {
 					sb.append(line.charAt(i));
 					if (line.trim().charAt(i + 1) == Constante.ASTERISCO) {
 
@@ -282,19 +301,19 @@ public class ArquivoMetricaBean implements Serializable {
 
 	private int verificarEntidadesDeuses(int limit, boolean isMethod) {
 
-		int contGod = 0;
+		int contGod = NUMBER_ZERO;
 		List<Auxiliar> contadores = new ArrayList<>();
 		Auxiliar auxiliar;
 		String conteudoString = conteudoCompactado.toString();
-		StringTokenizer st = new StringTokenizer(conteudoString, "\n");
-		String oldLine = "";
+		StringTokenizer st = new StringTokenizer(conteudoString, Constante.QUEBRA_LINHA);
+		String oldLine = Constante.VAZIO;
 
 		while (st.hasMoreTokens()) {
 			String line = st.nextToken();
 
 			if (!contadores.isEmpty() || contadores != null) {
 				for (Auxiliar contAuxiliar : contadores) {
-					if (contAuxiliar.getContador() != 0) {
+					if (contAuxiliar.getContador() != NUMBER_ZERO) {
 						contAuxiliar.setLinha(contAuxiliar.getLinha() + 1);
 					}
 				}
@@ -302,7 +321,7 @@ public class ArquivoMetricaBean implements Serializable {
 			if (line.contains(Constante.ABRE_CHAVES)) {
 				if (!contadores.isEmpty() || contadores != null) {
 					for (Auxiliar contAuxiliar : contadores) {
-						if (contAuxiliar.getContador() != 0) {
+						if (contAuxiliar.getContador() != NUMBER_ZERO) {
 							contAuxiliar.setContador(contAuxiliar.getContador() + 1);
 						}
 					}
@@ -323,7 +342,7 @@ public class ArquivoMetricaBean implements Serializable {
 
 				if (!contadores.isEmpty() || contadores != null) {
 					for (Auxiliar contAuxiliar : contadores) {
-						if (contAuxiliar.getContador() != 0) {
+						if (contAuxiliar.getContador() != NUMBER_ZERO) {
 							contAuxiliar.setContador(contAuxiliar.getContador() - 1);
 						}
 					}
@@ -331,12 +350,12 @@ public class ArquivoMetricaBean implements Serializable {
 			}
 			if (!contadores.isEmpty() || contadores != null) {
 				for (Auxiliar contAuxiliar : contadores) {
-					if (contAuxiliar.getContador() == 0) {
+					if (contAuxiliar.getContador() == NUMBER_ZERO) {
 						if (contAuxiliar.getLinha() > limit) {
 							contGod++;
-							contAuxiliar.setLinha(0);
+							contAuxiliar.setLinha(NUMBER_ZERO);
 						} else {
-							contAuxiliar.setLinha(0);
+							contAuxiliar.setLinha(NUMBER_ZERO);
 						}
 					}
 				}

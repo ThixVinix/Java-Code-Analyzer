@@ -19,7 +19,6 @@ public class ListenerAnalisarArquivo implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		ValidacaoArquivoEnum validacaoDiretorio;

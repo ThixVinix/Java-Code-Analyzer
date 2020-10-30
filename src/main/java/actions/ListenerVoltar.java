@@ -13,7 +13,6 @@ public class ListenerVoltar implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		tela.setVisible(false);
 		tela.frmAnaliseArquivo.resetKeyboardActions();

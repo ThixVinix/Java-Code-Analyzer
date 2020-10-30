@@ -15,7 +15,6 @@ public class ListenerGerarGraficoMetricas implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		tela.grafico = new Grafico(tela.arquivoMetricaBean.arquivoPesquisado.obterNomeArquivo(),
 				tela.arquivoMetricaBean.arquivoPesquisado.getQtdLoc().doubleValue(),

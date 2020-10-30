@@ -13,7 +13,6 @@ public class ListenerExibirConteudoCompleto implements ActionListener {
 		this.tela = telaPesquisaArquivo;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (tela.radioButtonConteudoCompleto.isSelected()) {
 			tela.radioButtonConteudoCompleto.setEnabled(false);

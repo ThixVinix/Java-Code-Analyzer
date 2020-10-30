@@ -41,7 +41,7 @@ public class TelaPesquisaURL extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		TextArea textoUrl = new TextArea();
+		final TextArea textoUrl = new TextArea();
 		textoUrl.setFont(new Font("Arial", Font.PLAIN, 18));
 		textoUrl.setEditable(false);
 		textoUrl.addTextListener(new TextListener() {
