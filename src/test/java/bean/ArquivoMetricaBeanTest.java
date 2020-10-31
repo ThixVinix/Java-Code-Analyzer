@@ -30,16 +30,18 @@ class ArquivoMetricaBeanTest {
 	private static final String DIRETORIO_NOME_ARQUIVO_TXT = "C:\\Users\\Public\\Documents\\fileJunitTest.txt";
 	private static final String DIRETORIO_ARQUIVO_JAVA_TESTE = "..\\Java-Code-Analyzer\\src\\test\\resources\\exemplosArquivosJavaTest\\Exemplo2.java";
 
-	private static final String NUMBER_ZERO_STRING = "0";
 	private static final String VAZIO = "";
 	private static final String SPECIAL_CHARACTERS = "@#$%!";
 	private static final String LETTERS = "abc";
+
+	private static final String NUMBER_ZERO_STRING = "0";
 	private static final String NUMBER_ONE_NEGATIVE_STRING = "-1";
 	private static final String NUMBER_ONE_POSITIVE_STRING = "1";
 
-	private static final Integer NUMBER_ZERO = 0;
-	private static final Integer NUMBER_ONE_NEGATIVE = -1;
-	private static final Integer NUMBER_ONE_POSITIVE = 1;
+	private static final Long NUMBER_ZERO_LONG = 0L;
+	private static final Integer NUMBER_ZERO_INT = 0;
+	private static final Integer NUMBER_ONE_NEGATIVE_INT = -1;
+	private static final Integer NUMBER_ONE_POSITIVE_INT = 1;
 
 	private static File fileJavaVazio;
 	private static File fileTxtVazio;
@@ -232,71 +234,63 @@ class ArquivoMetricaBeanTest {
 	@DisplayName("Análise do arquivo alvo passando a Qtd. Lim. Min. método deus = 0 e aquivo(File) com conteúdo")
 	@Test
 	void lerConteudoArquivoAlvoComConteudoMetodoLimiteZero() throws IOException {
-		arquivo.lerConteudoArquivoAlvo(fileJavaComConteudo, NUMBER_ZERO, NUMBER_ONE_POSITIVE);
-		arquivo.salvarMetricas();
-		assertNotEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdMetodoDeus());
+		arquivo.lerConteudoArquivoAlvo(fileJavaComConteudo, NUMBER_ZERO_INT, NUMBER_ONE_POSITIVE_INT);
+		assertNotEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdMetodoDeus());
 	}
 
 	@DisplayName("Análise do arquivo alvo passando a Qtd. Lim. Min. classe deusa = 0 e aquivo(File) com conteúdo")
 	@Test
 	void lerConteudoArquivoAlvoComConteudoClasseLimiteZero() throws IOException {
-		arquivo.lerConteudoArquivoAlvo(fileJavaComConteudo, NUMBER_ONE_POSITIVE, NUMBER_ZERO);
-		arquivo.salvarMetricas();
-		assertNotEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdClasseDeus());
+		arquivo.lerConteudoArquivoAlvo(fileJavaComConteudo, NUMBER_ONE_POSITIVE_INT, NUMBER_ZERO_INT);
+		assertNotEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdClasseDeus());
 	}
 
 	@DisplayName("Análise do arquivo alvo passando a Qtd. Lim. Min. método deus = 0 e aquivo(File) vazio")
 	@Test
 	void lerConteudoArquivoAlvoSemConteudoMetodoLimiteZero() throws IOException {
-		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ZERO, NUMBER_ONE_POSITIVE);
-		arquivo.salvarMetricas();
-		assertEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdMetodoDeus());
+		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ZERO_INT, NUMBER_ONE_POSITIVE_INT);
+		assertEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdMetodoDeus());
 	}
 
 	@DisplayName("Análise do arquivo alvo passando a Qtd. Lim. Min. classe deusa = 0 e aquivo(File) vazio")
 	@Test
 	void lerConteudoArquivoAlvoSemConteudoClasseLimiteZero() throws IOException {
-		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ONE_POSITIVE, NUMBER_ZERO);
-		arquivo.salvarMetricas();
-		assertEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdClasseDeus());
+		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ONE_POSITIVE_INT, NUMBER_ZERO_INT);
+		assertEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdClasseDeus());
 	}
 
 	@DisplayName("Análise do arquivo alvo passando a Qtd. Lim. Min. das entidades deusas com valores negativos")
 	@Test
 	void lerConteudoArquivoAlvoComConteudoEntidadesDeusasNegativas() throws IOException {
-		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ONE_NEGATIVE, NUMBER_ONE_NEGATIVE);
-		arquivo.salvarMetricas();
-		assertAll(() -> assertEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdMetodoDeus()),
-				() -> assertEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdClasseDeus()));
+		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ONE_NEGATIVE_INT, NUMBER_ONE_NEGATIVE_INT);
+		assertAll(() -> assertEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdMetodoDeus()),
+				() -> assertEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdClasseDeus()));
 	}
 
 	@DisplayName("Análise do arquivo alvo passando a Qtd. Lim. Min. das entidades deusas com valores = null")
 	@Test
 	void lerConteudoArquivoAlvoComConteudoEntidadesDeusasNulas() throws IOException {
 		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, null, null);
-		arquivo.salvarMetricas();
-		assertAll(() -> assertEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdMetodoDeus()),
-				() -> assertEquals(NUMBER_ZERO, arquivo.arquivoPesquisado.getQtdClasseDeus()));
+		assertAll(() -> assertEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdMetodoDeus()),
+				() -> assertEquals(NUMBER_ZERO_LONG, arquivo.getArquivoPesquisado().getQtdClasseDeus()));
 	}
 
 	@DisplayName("Análise do arquivo alvo = null")
 	@Test
 	void lerConteudoArquivoAlvoNulo() throws IOException {
-		arquivo.lerConteudoArquivoAlvo(null, NUMBER_ONE_POSITIVE, NUMBER_ONE_POSITIVE);
-		arquivo.salvarMetricas();
-		assertAll(() -> assertEquals(VAZIO, arquivo.arquivoPesquisado.getConteudoCompleto()),
-				() -> assertEquals(VAZIO, arquivo.arquivoPesquisado.getConteudoFormatado()),
-				() -> assertEquals(VAZIO, arquivo.arquivoPesquisado.getConteudoCompactado()));
+		arquivo.lerConteudoArquivoAlvo(null, NUMBER_ONE_POSITIVE_INT, NUMBER_ONE_POSITIVE_INT);
+		assertAll(() -> assertEquals(VAZIO, arquivo.getArquivoPesquisado().getConteudoCompleto()),
+				() -> assertEquals(VAZIO, arquivo.getArquivoPesquisado().getConteudoFormatado()),
+				() -> assertEquals(VAZIO, arquivo.getArquivoPesquisado().getConteudoCompactado()));
 	}
 
 	@DisplayName("Análise do arquivo alvo = \"\" (vazio)")
 	@Test
 	void lerConteudoArquivoAlvoVazio() throws IOException {
-		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ONE_POSITIVE, NUMBER_ONE_POSITIVE);
-		arquivo.salvarMetricas();
-		assertAll(() -> assertEquals(VAZIO, arquivo.arquivoPesquisado.getConteudoCompleto()),
-				() -> assertEquals(VAZIO, arquivo.arquivoPesquisado.getConteudoFormatado()),
-				() -> assertEquals(VAZIO, arquivo.arquivoPesquisado.getConteudoCompactado()));
+		arquivo.lerConteudoArquivoAlvo(fileJavaVazio, NUMBER_ONE_POSITIVE_INT, NUMBER_ONE_POSITIVE_INT);
+		assertAll(() -> assertEquals(VAZIO, arquivo.getArquivoPesquisado().getConteudoCompleto()),
+				() -> assertEquals(VAZIO, arquivo.getArquivoPesquisado().getConteudoFormatado()),
+				() -> assertEquals(VAZIO, arquivo.getArquivoPesquisado().getConteudoCompactado()));
 	}
 
 }

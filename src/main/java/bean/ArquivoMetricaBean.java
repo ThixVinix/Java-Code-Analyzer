@@ -5,9 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -21,70 +21,60 @@ import utilitarios.Constante;
 import utilitarios.DirectoryUtil;
 import utilitarios.Util;
 
-public class ArquivoMetricaBean implements Serializable {
+public class ArquivoMetricaBean {
 
-	private static final long serialVersionUID = -1433406600601635150L;
-	private static final int NUMBER_ZERO = 0;
-	private int qtdLinhasDeCodigo;
-	private int qtdClasses;
-	private int qtdMetodos;
-	private int qtdComentarios;
-	private int qtdMetodoDeus;
-	private int qtdClasseDeus;
-	public ArquivoMetrica arquivoPesquisado;
+	private Long qtdLinhasDeCodigo;
+	private Long qtdClasses;
+	private Long qtdMetodos;
+	private Long qtdComentarios;
+	private Long qtdMetodoDeus;
+	private Long qtdClasseDeus;
+	private ArquivoMetrica arquivoPesquisado;
+	private EnumMap<ValidacaoArquivoEnum, String> mapValidations;
 	private StringBuilder conteudoCompleto;
 	private StringBuilder conteudoFormatado;
 	private StringBuilder conteudoCompactado;
 	private boolean verificadorMultiComentario = false;
 
 	public ArquivoMetricaBean() {
+		this.qtdLinhasDeCodigo = Constante.NUMBER_ZERO_LONG;
+		this.qtdClasses = Constante.NUMBER_ZERO_LONG;
+		this.qtdMetodos = Constante.NUMBER_ZERO_LONG;
+		this.qtdComentarios = Constante.NUMBER_ZERO_LONG;
+		this.qtdMetodoDeus = Constante.NUMBER_ZERO_LONG;
+		this.qtdClasseDeus = Constante.NUMBER_ZERO_LONG;
+
 		arquivoPesquisado = new ArquivoMetrica();
-		arquivoPesquisado.setQtdLoc(NUMBER_ZERO);
-		arquivoPesquisado.setQtdClasseDeus(NUMBER_ZERO);
-		arquivoPesquisado.setQtdMetodos(NUMBER_ZERO);
-		arquivoPesquisado.setQtdComentarios(NUMBER_ZERO);
-		arquivoPesquisado.setQtdClasseDeus(NUMBER_ZERO);
-		arquivoPesquisado.setQtdMetodoDeus(NUMBER_ZERO);
+		getArquivoPesquisado().setQtdLoc(Constante.NUMBER_ZERO_LONG);
+		getArquivoPesquisado().setQtdClasseDeus(Constante.NUMBER_ZERO_LONG);
+		getArquivoPesquisado().setQtdMetodos(Constante.NUMBER_ZERO_LONG);
+		getArquivoPesquisado().setQtdComentarios(Constante.NUMBER_ZERO_LONG);
+		getArquivoPesquisado().setQtdClasseDeus(Constante.NUMBER_ZERO_LONG);
+		getArquivoPesquisado().setQtdMetodoDeus(Constante.NUMBER_ZERO_LONG);
+
+		carregarValidacoes();
 	}
 
-	public void salvarMetricas() {
+	private void carregarValidacoes() {
 
-		if (Util.isNotNullOrZeroNumber(qtdLinhasDeCodigo))
-			arquivoPesquisado.setQtdLoc(qtdLinhasDeCodigo);
+		mapValidations = new EnumMap<>(ValidacaoArquivoEnum.class);
 
-		if (Util.isNotNullOrZeroNumber(qtdClasses))
-			arquivoPesquisado.setQtdClasses(qtdClasses);
-
-		if (Util.isNotNullOrZeroNumber(qtdMetodos))
-			arquivoPesquisado.setQtdMetodos(qtdMetodos);
-
-		if (Util.isNotNullOrZeroNumber(qtdComentarios))
-			arquivoPesquisado.setQtdComentarios(qtdComentarios);
-
-		if (Util.isNotNullOrZeroNumber(qtdMetodoDeus))
-			arquivoPesquisado.setQtdMetodoDeus(qtdMetodoDeus);
-
-		if (Util.isNotNullOrZeroNumber(qtdClasseDeus))
-			arquivoPesquisado.setQtdClasseDeus(qtdClasseDeus);
-
-		if (Util.isNotNullOrEmpty(conteudoCompleto)) {
-			arquivoPesquisado.setConteudoCompleto(conteudoCompleto.toString());
-		} else {
-			arquivoPesquisado.setConteudoCompleto("");
-		}
-
-		if (Util.isNotNullOrEmpty(conteudoFormatado))
-			arquivoPesquisado.setConteudoFormatado(conteudoFormatado.toString());
-		else {
-			arquivoPesquisado.setConteudoFormatado("");
-		}
-
-		if (Util.isNotNullOrEmpty(conteudoCompactado))
-			arquivoPesquisado.setConteudoCompactado(conteudoCompactado.toString());
-		else {
-			arquivoPesquisado.setConteudoCompactado("");
-		}
-
+		getMapValidations().put(ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_DIRETORIO,
+				Constante.PREENCHIMENTO_OBRIGATORIO_DIRETORIO);
+		getMapValidations().put(ValidacaoArquivoEnum.DIRETORIO_NAO_ENCONTRADO, Constante.DIRETORIO_NAO_ENCONTRADO);
+		getMapValidations().put(ValidacaoArquivoEnum.TIPO_ARQUIVO_INCORRETO, Constante.TIPO_ARQUIVO_INCORRETO);
+		getMapValidations().put(ValidacaoArquivoEnum.ERRO_CONVERSAO_DIRETORIO, Constante.ERRO_CONVERSAO_DIRETORIO);
+		getMapValidations().put(ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_METODO_DEUS,
+				Constante.PREENCHIMENTO_OBRIGATORIO_METODO_DEUS);
+		getMapValidations().put(ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_CLASSE_DEUS,
+				Constante.PREENCHIMENTO_OBRIGATORIO_CLASSE_DEUS);
+		getMapValidations().put(ValidacaoArquivoEnum.PREENCHIMENTO_INCORRETO_METODO_DEUS,
+				Constante.PREENCHIMENTO_INCORRETO_METODO_DEUS);
+		getMapValidations().put(ValidacaoArquivoEnum.PREENCHIMENTO_INCORRETO_CLASSE_DEUS,
+				Constante.PREENCHIMENTO_INCORRETO_CLASSE_DEUS);
+		getMapValidations().put(ValidacaoArquivoEnum.ARQUIVO_ANALISADO, Constante.ARQUIVO_ANALISADO);
+		getMapValidations().put(ValidacaoArquivoEnum.MESSAGE_SELECIONE_GRAFICO, Constante.MESSAGE_SELECIONE_GRAFICO);
+		getMapValidations().put(ValidacaoArquivoEnum.SUCESSO, Constante.VAZIO);
 	}
 
 	public ValidacaoArquivoEnum validarDiretorio(String diretorioString) {
@@ -127,14 +117,16 @@ public class ArquivoMetricaBean implements Serializable {
 	public void lerConteudoArquivoAlvo(File arquivo, Integer limiteMinMetodoDeus, Integer limiteMinClasseDeus)
 			throws IOException {
 
-		if (Util.isNullOrEmpty(arquivo))
+		if (Util.isNullOrEmpty(limiteMinMetodoDeus) || limiteMinMetodoDeus < Constante.NUMBER_ZERO_INT)
+			limiteMinMetodoDeus = Constante.NUMBER_ZERO_INT;
+
+		if (Util.isNullOrEmpty(limiteMinClasseDeus) || limiteMinClasseDeus < Constante.NUMBER_ZERO_INT)
+			limiteMinClasseDeus = Constante.NUMBER_ZERO_INT;
+
+		if (Util.isNullOrEmpty(arquivo)) {
+			salvarMetricas();
 			return;
-
-		if (Util.isNullOrEmpty(limiteMinMetodoDeus) || limiteMinMetodoDeus < 0)
-			limiteMinMetodoDeus = NUMBER_ZERO;
-
-		if (Util.isNullOrEmpty(limiteMinClasseDeus) || limiteMinClasseDeus < 0)
-			limiteMinClasseDeus = NUMBER_ZERO;
+		}
 
 		FileInputStream stream;
 
@@ -144,10 +136,12 @@ public class ArquivoMetricaBean implements Serializable {
 		BufferedReader br = new BufferedReader(reader);
 
 		String line;
-		String oldLine = "";
+		String oldLine = Constante.VAZIO;
+
 		conteudoCompleto = new StringBuilder();
 		conteudoCompactado = new StringBuilder();
 		conteudoFormatado = new StringBuilder();
+
 		while ((line = br.readLine()) != null) {
 			conteudoCompleto.append(line + Constante.QUEBRA_LINHA);
 
@@ -184,10 +178,14 @@ public class ArquivoMetricaBean implements Serializable {
 			oldLine = line;
 		}
 
+		stream.close();
 		reader.close();
+		br.close();
 
 		qtdMetodoDeus = verificarEntidadesDeuses(limiteMinMetodoDeus, true);
 		qtdClasseDeus = verificarEntidadesDeuses(limiteMinClasseDeus, false);
+
+		salvarMetricas();
 
 	}
 
@@ -225,7 +223,7 @@ public class ArquivoMetricaBean implements Serializable {
 				|| (line.contains(Constante.COMENTARIO_SIMPLES)
 						&& !line.trim().startsWith(Constante.COMENTARIO_SIMPLES))) {
 			StringBuilder sb = new StringBuilder();
-			int countAspas = NUMBER_ZERO;
+			int countAspas = Constante.NUMBER_ZERO_INT;
 
 			for (int i = 0; i < line.trim().length(); i++) {
 
@@ -234,15 +232,15 @@ public class ArquivoMetricaBean implements Serializable {
 					countAspas++;
 				}
 
-				if (line.trim().charAt(i) == Constante.ASPAS_DUPLAS && countAspas == NUMBER_ZERO) {
+				if (line.trim().charAt(i) == Constante.ASPAS_DUPLAS && countAspas == Constante.NUMBER_ZERO_INT) {
 					countAspas++;
 				}
 
 				if (countAspas == 2) {
-					countAspas = NUMBER_ZERO;
+					countAspas = Constante.NUMBER_ZERO_INT;
 				}
 
-				if (line.trim().charAt(i) == Constante.BARRA && countAspas == NUMBER_ZERO) {
+				if (line.trim().charAt(i) == Constante.BARRA && countAspas == Constante.NUMBER_ZERO_INT) {
 					sb.append(line.charAt(i));
 					if (line.trim().charAt(i + 1) == Constante.ASTERISCO) {
 
@@ -299,9 +297,9 @@ public class ArquivoMetricaBean implements Serializable {
 		}
 	}
 
-	private int verificarEntidadesDeuses(int limit, boolean isMethod) {
+	private Long verificarEntidadesDeuses(int limit, boolean isMethod) {
 
-		int contGod = NUMBER_ZERO;
+		Long contGod = Constante.NUMBER_ZERO_LONG;
 		List<Auxiliar> contadores = new ArrayList<>();
 		Auxiliar auxiliar;
 		String conteudoString = conteudoCompactado.toString();
@@ -313,7 +311,7 @@ public class ArquivoMetricaBean implements Serializable {
 
 			if (!contadores.isEmpty() || contadores != null) {
 				for (Auxiliar contAuxiliar : contadores) {
-					if (contAuxiliar.getContador() != NUMBER_ZERO) {
+					if (contAuxiliar.getContador() != Constante.NUMBER_ZERO_INT) {
 						contAuxiliar.setLinha(contAuxiliar.getLinha() + 1);
 					}
 				}
@@ -321,7 +319,7 @@ public class ArquivoMetricaBean implements Serializable {
 			if (line.contains(Constante.ABRE_CHAVES)) {
 				if (!contadores.isEmpty() || contadores != null) {
 					for (Auxiliar contAuxiliar : contadores) {
-						if (contAuxiliar.getContador() != NUMBER_ZERO) {
+						if (contAuxiliar.getContador() != Constante.NUMBER_ZERO_INT) {
 							contAuxiliar.setContador(contAuxiliar.getContador() + 1);
 						}
 					}
@@ -342,7 +340,7 @@ public class ArquivoMetricaBean implements Serializable {
 
 				if (!contadores.isEmpty() || contadores != null) {
 					for (Auxiliar contAuxiliar : contadores) {
-						if (contAuxiliar.getContador() != NUMBER_ZERO) {
+						if (contAuxiliar.getContador() != Constante.NUMBER_ZERO_INT) {
 							contAuxiliar.setContador(contAuxiliar.getContador() - 1);
 						}
 					}
@@ -350,12 +348,12 @@ public class ArquivoMetricaBean implements Serializable {
 			}
 			if (!contadores.isEmpty() || contadores != null) {
 				for (Auxiliar contAuxiliar : contadores) {
-					if (contAuxiliar.getContador() == NUMBER_ZERO) {
+					if (contAuxiliar.getContador() == Constante.NUMBER_ZERO_INT) {
 						if (contAuxiliar.getLinha() > limit) {
 							contGod++;
-							contAuxiliar.setLinha(NUMBER_ZERO);
+							contAuxiliar.setLinha(Constante.NUMBER_ZERO_INT);
 						} else {
-							contAuxiliar.setLinha(NUMBER_ZERO);
+							contAuxiliar.setLinha(Constante.NUMBER_ZERO_INT);
 						}
 					}
 				}
@@ -365,6 +363,59 @@ public class ArquivoMetricaBean implements Serializable {
 
 		}
 		return contGod;
+	}
+
+	public void salvarDiretorioAndArquivo(Path diretorio, File arquivo) {
+		getArquivoPesquisado().setCaminho(diretorio);
+		getArquivoPesquisado().setArquivo(arquivo);
+	}
+
+	private void salvarMetricas() {
+
+		if (Util.isNotNullOrZeroNumber(qtdLinhasDeCodigo))
+			getArquivoPesquisado().setQtdLoc(qtdLinhasDeCodigo);
+
+		if (Util.isNotNullOrZeroNumber(qtdClasses))
+			getArquivoPesquisado().setQtdClasses(qtdClasses);
+
+		if (Util.isNotNullOrZeroNumber(qtdMetodos))
+			getArquivoPesquisado().setQtdMetodos(qtdMetodos);
+
+		if (Util.isNotNullOrZeroNumber(qtdComentarios))
+			getArquivoPesquisado().setQtdComentarios(qtdComentarios);
+
+		if (Util.isNotNullOrZeroNumber(qtdMetodoDeus))
+			getArquivoPesquisado().setQtdMetodoDeus(qtdMetodoDeus);
+
+		if (Util.isNotNullOrZeroNumber(qtdClasseDeus))
+			getArquivoPesquisado().setQtdClasseDeus(qtdClasseDeus);
+
+		if (Util.isNotNullOrEmpty(conteudoCompleto)) {
+			getArquivoPesquisado().setConteudoCompleto(conteudoCompleto.toString());
+		} else {
+			getArquivoPesquisado().setConteudoCompleto(Constante.VAZIO);
+		}
+
+		if (Util.isNotNullOrEmpty(conteudoFormatado))
+			getArquivoPesquisado().setConteudoFormatado(conteudoFormatado.toString());
+		else {
+			getArquivoPesquisado().setConteudoFormatado(Constante.VAZIO);
+		}
+
+		if (Util.isNotNullOrEmpty(conteudoCompactado))
+			getArquivoPesquisado().setConteudoCompactado(conteudoCompactado.toString());
+		else {
+			getArquivoPesquisado().setConteudoCompactado(Constante.VAZIO);
+		}
+
+	}
+
+	public ArquivoMetrica getArquivoPesquisado() {
+		return arquivoPesquisado;
+	}
+
+	public EnumMap<ValidacaoArquivoEnum, String> getMapValidations() {
+		return mapValidations;
 	}
 
 }

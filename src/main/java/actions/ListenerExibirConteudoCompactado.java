@@ -20,7 +20,7 @@ public class ListenerExibirConteudoCompactado implements ActionListener {
 			tela.radioButtonConteudoCompleto.setEnabled(true);
 			tela.radioButtonConteudoFormatado.setSelected(false);
 			tela.radioButtonConteudoFormatado.setEnabled(true);
-			tela.textAreaConteudo.setText(tela.arquivoMetricaBean.arquivoPesquisado.getConteudoCompactado());
+			tela.textAreaConteudo.setText(tela.arquivoMetricaBean.getArquivoPesquisado().getConteudoCompactado());
 			tela.textAreaConteudo.repaint();
 		}
 	}
