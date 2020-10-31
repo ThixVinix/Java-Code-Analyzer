@@ -12,12 +12,12 @@ public class ArquivoMetrica implements Serializable {
 	private String conteudoCompactado;
 	private String conteudoCompleto;
 	private String conteudoFormatado;
-	private Integer qtdLoc;
-	private Integer qtdMetodos;
-	private Integer qtdClasses;
-	private Integer qtdComentarios;
-	private Integer qtdMetodoDeus;
-	private Integer qtdClasseDeus;
+	private Long qtdLoc;
+	private Long qtdMetodos;
+	private Long qtdClasses;
+	private Long qtdComentarios;
+	private Long qtdMetodoDeus;
+	private Long qtdClasseDeus;
 	
 	public String obterNomeArquivo() {
 		if (getArquivo() != null) {
@@ -80,51 +80,51 @@ public class ArquivoMetrica implements Serializable {
 		this.conteudoFormatado = conteudoFormatado;
 	}
 
-	public Integer getQtdLoc() {
+	public Long getQtdLoc() {
 		return qtdLoc;
 	}
 
-	public void setQtdLoc(Integer qtdLoc) {
+	public void setQtdLoc(Long qtdLoc) {
 		this.qtdLoc = qtdLoc;
 	}
 
-	public Integer getQtdMetodos() {
+	public Long getQtdMetodos() {
 		return qtdMetodos;
 	}
 
-	public void setQtdMetodos(Integer qtdMetodos) {
+	public void setQtdMetodos(Long qtdMetodos) {
 		this.qtdMetodos = qtdMetodos;
 	}
 
-	public Integer getQtdClasses() {
+	public Long getQtdClasses() {
 		return qtdClasses;
 	}
 
-	public void setQtdClasses(Integer qtdClasses) {
+	public void setQtdClasses(Long qtdClasses) {
 		this.qtdClasses = qtdClasses;
 	}
 
-	public Integer getQtdComentarios() {
+	public Long getQtdComentarios() {
 		return qtdComentarios;
 	}
 
-	public void setQtdComentarios(Integer qtdComentarios) {
+	public void setQtdComentarios(Long qtdComentarios) {
 		this.qtdComentarios = qtdComentarios;
 	}
 
-	public Integer getQtdMetodoDeus() {
+	public Long getQtdMetodoDeus() {
 		return qtdMetodoDeus;
 	}
 
-	public void setQtdMetodoDeus(Integer qtdMetodoDeus) {
+	public void setQtdMetodoDeus(Long qtdMetodoDeus) {
 		this.qtdMetodoDeus = qtdMetodoDeus;
 	}
 
-	public Integer getQtdClasseDeus() {
+	public Long getQtdClasseDeus() {
 		return qtdClasseDeus;
 	}
 
-	public void setQtdClasseDeus(Integer qtdClasseDeus) {
+	public void setQtdClasseDeus(Long qtdClasseDeus) {
 		this.qtdClasseDeus = qtdClasseDeus;
 	}
 

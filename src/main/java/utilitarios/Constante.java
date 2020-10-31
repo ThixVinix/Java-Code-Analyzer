@@ -18,6 +18,8 @@ public class Constante {
 
 	public static final Integer QTD_MIN_LINHAS_METODO_DEUS = 200;
 	public static final Integer QTD_MIN_LINHAS_CLASSE_DEUS = 1000;
+	public static final Long NUMBER_ZERO_LONG = 0L;
+	public static final int NUMBER_ZERO_INT = 0;
 	public static final char ASPAS_DUPLAS = '"';
 	public static final char BARRA = '/';
 	public static final char BARRA_INVERTIDA = '\\';

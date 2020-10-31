@@ -260,12 +260,26 @@ public class Util {
 				try {
 					numeroConvertido = Long.parseLong(numeroAConverter);
 				} catch (NumberFormatException e) {
+					numeroConvertido = null;
 				}
 
 			}
 		}
 
 		return numeroConvertido;
+	}
+	
+	public static Integer converterStringEmInteger(String numeroString) {
+		
+		Integer numero;
+		
+        try {
+           numero = Integer.parseInt(numeroString);
+        } catch (NumberFormatException e){
+        	numero = null;
+        }
+		
+		return numero;
 	}
 
 	/**
