@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.TextArea;
 import java.text.ParseException;
-import java.util.EnumMap;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -30,7 +29,6 @@ import actions.ListenerJavaFileChooser;
 import actions.ListenerLimpar;
 import actions.ListenerVoltar;
 import bean.ArquivoMetricaBean;
-import enums.ValidacaoArquivoEnum;
 import plainDocuments.DocumentoCampoNumerico;
 import utilitarios.Constante;
 
@@ -65,7 +63,6 @@ public class TelaPesquisaArquivo extends JFrame {
 	public TextArea textAreaConteudo;
 	public JCheckBox checkBoxEntidadeDeus;
 	public JComboBox<String> comboBoxGrafico;
-	public EnumMap<ValidacaoArquivoEnum, String> mapValidations;
 	public String arquivoAnteriorAnalisado;
 	public String limiteMetodoDeusAnterior;
 	public String limiteClasseDeusAnterior;
@@ -77,7 +74,6 @@ public class TelaPesquisaArquivo extends JFrame {
 		this.arquivoMetricaBean = new ArquivoMetricaBean();
 		this.frameAnterior = frameAnterior;
 		setResizable(false);
-		carregarValidacoes();
 		setTitle(Constante.TITLE_PESQUISA_ARQUIVO);
 		arquivoAnteriorAnalisado = "";
 		limiteClasseDeusAnterior = "";
@@ -123,28 +119,6 @@ public class TelaPesquisaArquivo extends JFrame {
 
 	public void exibirMensagemAlerta(String mensagem) {
 		JOptionPane.showMessageDialog(null, mensagem, "Atenção", JOptionPane.WARNING_MESSAGE);
-	}
-
-	private void carregarValidacoes() {
-
-		mapValidations = new EnumMap<>(ValidacaoArquivoEnum.class);
-
-		mapValidations.put(ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_DIRETORIO,
-				Constante.PREENCHIMENTO_OBRIGATORIO_DIRETORIO);
-		mapValidations.put(ValidacaoArquivoEnum.DIRETORIO_NAO_ENCONTRADO, Constante.DIRETORIO_NAO_ENCONTRADO);
-		mapValidations.put(ValidacaoArquivoEnum.TIPO_ARQUIVO_INCORRETO, Constante.TIPO_ARQUIVO_INCORRETO);
-		mapValidations.put(ValidacaoArquivoEnum.ERRO_CONVERSAO_DIRETORIO, Constante.ERRO_CONVERSAO_DIRETORIO);
-		mapValidations.put(ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_METODO_DEUS,
-				Constante.PREENCHIMENTO_OBRIGATORIO_METODO_DEUS);
-		mapValidations.put(ValidacaoArquivoEnum.PREENCHIMENTO_OBRIGATORIO_CLASSE_DEUS,
-				Constante.PREENCHIMENTO_OBRIGATORIO_CLASSE_DEUS);
-		mapValidations.put(ValidacaoArquivoEnum.PREENCHIMENTO_INCORRETO_METODO_DEUS,
-				Constante.PREENCHIMENTO_INCORRETO_METODO_DEUS);
-		mapValidations.put(ValidacaoArquivoEnum.PREENCHIMENTO_INCORRETO_CLASSE_DEUS,
-				Constante.PREENCHIMENTO_INCORRETO_CLASSE_DEUS);
-		mapValidations.put(ValidacaoArquivoEnum.ARQUIVO_ANALISADO, Constante.ARQUIVO_ANALISADO);
-		mapValidations.put(ValidacaoArquivoEnum.MESSAGE_SELECIONE_GRAFICO, Constante.MESSAGE_SELECIONE_GRAFICO);
-		mapValidations.put(ValidacaoArquivoEnum.SUCESSO, "");
 	}
 
 	private void createRotulos() {
@@ -489,6 +463,5 @@ public class TelaPesquisaArquivo extends JFrame {
 		botaoGerarGrafico.setBounds(1018, 160, 136, 23);
 		frmAnaliseArquivo.add(botaoGerarGrafico);
 	}
-	
-	
+
 }

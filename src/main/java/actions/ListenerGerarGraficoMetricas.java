@@ -16,11 +16,11 @@ public class ListenerGerarGraficoMetricas implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		tela.grafico = new Grafico(tela.arquivoMetricaBean.arquivoPesquisado.obterNomeArquivo(),
-				tela.arquivoMetricaBean.arquivoPesquisado.getQtdLoc().doubleValue(),
-				tela.arquivoMetricaBean.arquivoPesquisado.getQtdClasses().doubleValue(),
-				tela.arquivoMetricaBean.arquivoPesquisado.getQtdMetodos().doubleValue(),
-				tela.arquivoMetricaBean.arquivoPesquisado.getQtdComentarios().doubleValue());
+		tela.grafico = new Grafico(tela.arquivoMetricaBean.getArquivoPesquisado().obterNomeArquivo(),
+				tela.arquivoMetricaBean.getArquivoPesquisado().getQtdLoc().doubleValue(),
+				tela.arquivoMetricaBean.getArquivoPesquisado().getQtdClasses().doubleValue(),
+				tela.arquivoMetricaBean.getArquivoPesquisado().getQtdMetodos().doubleValue(),
+				tela.arquivoMetricaBean.getArquivoPesquisado().getQtdComentarios().doubleValue());
 
 		switch (tela.comboBoxGrafico.getSelectedIndex()) {
 		case 1:
@@ -33,7 +33,7 @@ public class ListenerGerarGraficoMetricas implements ActionListener {
 			tela.grafico.criarGraficoBarrasVertical();
 			break;
 		default:
-			tela.exibirMensagemAlerta(tela.mapValidations.get(ValidacaoArquivoEnum.MESSAGE_SELECIONE_GRAFICO));
+			tela.exibirMensagemAlerta(tela.arquivoMetricaBean.getMapValidations().get(ValidacaoArquivoEnum.MESSAGE_SELECIONE_GRAFICO));
 		}
 	}
 
