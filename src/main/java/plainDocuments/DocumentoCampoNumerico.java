@@ -14,6 +14,9 @@ public class DocumentoCampoNumerico extends PlainDocument {
 	public DocumentoCampoNumerico(Integer tamanhoMax) {
 		this.tamanhoMax = tamanhoMax;
 	}
+	
+	public DocumentoCampoNumerico() {
+	}
 
 	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -24,10 +27,12 @@ public class DocumentoCampoNumerico extends PlainDocument {
 		String stringAntiga = getText(0, getLength());
 		int tamanhoNovo = stringAntiga.length() + str.length();
 
-		if (tamanhoNovo <= tamanhoMax) {
-			super.insertString(offs, str, a);
-		} else {
-			super.insertString(offs, "", a);
+		if (tamanhoMax != null) {
+			if (tamanhoNovo <= tamanhoMax) {
+				super.insertString(offs, str, a);
+			} else {
+				super.insertString(offs, "", a);
+			}
 		}
 	}
 }

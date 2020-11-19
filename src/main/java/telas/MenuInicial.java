@@ -15,10 +15,15 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import utilitarios.Constante;
 
 public class MenuInicial {
 
+	private static final Logger LOGGER = LogManager.getLogger(MenuInicial.class.getName());
+	
 	public JFrame frameTelaInicial;
 	private TelaPesquisaURL frameTelaPesquisaURL;
 	private TelaPesquisaArquivo frameTelaPesquisaArquivo;
@@ -31,7 +36,7 @@ public class MenuInicial {
 	 * @wbp.parser.entryPoint
 	 */
 	public void initialize() {
-
+		LOGGER.info("Inicializando tela do menu inicial...");
 		frameTelaInicial = new JFrame();
 		frameTelaInicial.setTitle(Constante.TITLE_ANALIZADOR_CODIGO_JAVA);
 		frameTelaInicial.setResizable(false);

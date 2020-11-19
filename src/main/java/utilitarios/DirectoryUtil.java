@@ -1,26 +1,94 @@
 package utilitarios;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class DirectoryUtil {
+
+	private static final Logger LOGGER = LogManager.getLogger(DirectoryUtil.class.getName());
+
+	private static Class<DirectoryUtil> c;
+	private static Method[] methods;
+
+	static {
+		c = DirectoryUtil.class;
+		methods = c.getMethods();
+	}
 
 	private DirectoryUtil() {
 	}
-	
-	public static File criarArquivo(String pathFileString) throws IOException {
-		File file = new File(pathFileString);
+
+	public static BufferedReader lerArquivo(File arquivo) {
+
+		BufferedReader br;
+		String message = "Leitura realizada.";
+
 		try {
-			if (!file.createNewFile()) {
-				throw new IOException();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+
+			LOGGER.info("Inicializando leitura do arquivo...");
+
+			if (Util.isNullOrEmpty(arquivo))
+				throw new NullPointerException();
+
+			FileInputStream stream = new FileInputStream(arquivo);
+			InputStreamReader reader = new InputStreamReader(stream);
+			br = new BufferedReader(reader);
+			
+			LOGGER.info(message);
+		} catch (NullPointerException e) {
+			message = String.format("Não foi possível ler arquivo nulo: %s", e.getCause());
+			LOGGER.warn(message);
+			br = null;
+		} catch (FileNotFoundException e) {
+			message = String.format("Não foi possível encontrar arquivo \"%s\": %s", arquivo.getName(), e.getMessage());
+			LOGGER.warn(message);
+			br = null;
 		}
+
+		return br;
+	}
+
+	public static File criarArquivo(String pathFileString) {
+
+		File file;
+		String message = "Criação efetuada";
+//		String nomeMetodo = getCompleteMethodName("criarArquivo");
+
+		try {
+			LOGGER.debug("Criando arquivo...");
+			if (Util.isNullOrEmpty(pathFileString))
+				throw new NullPointerException();
+
+			file = new File(pathFileString);
+
+			if (!file.createNewFile())
+				throw new IOException();
+
+			LOGGER.info(message);
+		} catch (NullPointerException e) {
+			message = String.format("Não foi possível criar o arquivo por um diretório vazio/nulo %n %n %s",
+					e.getMessage());
+			LOGGER.warn(message);
+			file = null;
+		} catch (IOException e) {
+			message = String.format("Não foi possível criar o arquivo pelo diretório \"%s\"%n %s", pathFileString,
+					e.getMessage());
+			LOGGER.warn(message);
+			file = null;
+		}
+
 		return file;
 	}
 
@@ -65,12 +133,46 @@ public class DirectoryUtil {
 	 * @throws InvalidPathException
 	 */
 	public static Path obterPathPeloDiretorioString(String diretorioString) {
-
 		Path path;
 
 		try {
+			LOGGER.debug("Convertendo String para Path...");
 			path = Paths.get(diretorioString);
+			LOGGER.info("Path obtido.");
 		} catch (InvalidPathException e) {
+			String message;
+			if (Util.isNullOrEmpty(diretorioString)) {
+				message = String.format("Não foi possível obter o diretório vazio/nulo: %s", e.getCause());
+				LOGGER.warn(message);
+			} else {
+				message = String.format("Não foi possível obter o diretório: \"%s\"%n: %s", diretorioString,
+						e.getMessage());
+				LOGGER.warn(message);
+			}
+			path = null;
+		}
+
+		return path;
+	}
+
+	public static Path obterPathPorArquivoExistente(File file) {
+
+		Path path;
+		String message = "Path obtido.";
+//		String nomeMetodo = getCompleteMethodName("obterPathPorArquivoExistente");
+
+		try {
+			LOGGER.debug("Convertendo File para Path...");
+			path = file.toPath();
+			LOGGER.info(message);
+		} catch (NullPointerException e) {
+			message = String.format("Não é possível obter o caminho de um arquivo vazio/nulo: %s", e.getCause());
+			path = null;
+			LOGGER.warn(message);
+		} catch (InvalidPathException e) {
+			message = String.format("Não foi possível obter o diretório do arquivo: %s %n %s", file.toString(),
+					e.getMessage());
+			LOGGER.warn(message);
 			path = null;
 		}
 
@@ -84,15 +186,35 @@ public class DirectoryUtil {
 	 * @return file or null
 	 */
 	public static File obterArquivoPorDiretorio(Path caminho) {
-		File arquivo;
+		File arquivo = null;
+		String message = "Arquivo obtido.";
 
 		try {
+			LOGGER.info("Obtendo arquivo através de um diretório...");
 			arquivo = caminho.toFile();
-		} catch (Exception e) {
+			LOGGER.info(message);
+		} catch (NullPointerException e) {
+			message = String.format("Não foi possível obter o arquivo através de um diretório vazio/nulo: %s",
+					e.getCause());
+			LOGGER.warn(message);
+		} catch (UnsupportedOperationException e) {
+			message = String.format("Não foi possível obter o diretório através do diretório digitado: %s %n %s",
+					caminho.toString(), e.getMessage());
+			LOGGER.warn(message);
 			arquivo = null;
 		}
 
 		return arquivo;
+	}
+
+	@SuppressWarnings(value = "unused")
+	private static String getCompleteMethodName(String nameMethodString) {
+		for (Method method : methods) {
+			if (nameMethodString.equalsIgnoreCase(method.getName())) {
+				return method.toGenericString();
+			}
+		}
+		return Constante.VAZIO;
 	}
 
 }
