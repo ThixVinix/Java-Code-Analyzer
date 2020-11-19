@@ -33,7 +33,7 @@ public class ListenerGerarGraficoMetricas implements ActionListener {
 			tela.grafico.criarGraficoBarrasVertical();
 			break;
 		default:
-			tela.exibirMensagemAlerta(tela.arquivoMetricaBean.getMapValidations().get(ValidacaoArquivoEnum.MESSAGE_SELECIONE_GRAFICO));
+			tela.exibirMensagemAlerta(ValidacaoArquivoEnum.MESSAGE_SELECIONE_GRAFICO.getDescricao());
 		}
 	}
 

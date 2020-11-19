@@ -44,7 +44,7 @@ public class ListenerAnalisarArquivo implements ActionListener {
 		tela.arquivoMetricaBean.salvarDiretorioAndArquivo(path, file);
 
 		try {
-			tela.arquivoMetricaBean.lerConteudoArquivoAlvo(file, campoLimiteMetodoDeus, campoLimiteClasseDeus);
+			tela.arquivoMetricaBean.iniciarAnalise(file, campoLimiteMetodoDeus, campoLimiteClasseDeus);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -72,11 +72,11 @@ public class ListenerAnalisarArquivo implements ActionListener {
 		if (validacaoDiretorio != ValidacaoArquivoEnum.SUCESSO) {
 			switch (validacaoDiretorio) {
 			case ERRO_CONVERSAO_DIRETORIO:
-			case ARQUIVO_NAO_SUPORTADO:
-				tela.exibirMensagemErro(tela.arquivoMetricaBean.getMapValidations().get(validacaoDiretorio));
+			case TIPO_ARQUIVO_INCORRETO:
+				tela.exibirMensagemErro(validacaoDiretorio.getDescricao());
 				break;
 			default:
-				tela.exibirMensagemAlerta(tela.arquivoMetricaBean.getMapValidations().get(validacaoDiretorio));
+				tela.exibirMensagemAlerta(validacaoDiretorio.getDescricao());
 			}
 
 			return false;
@@ -93,7 +93,7 @@ public class ListenerAnalisarArquivo implements ActionListener {
 				tela.campoLimiteMetodoDeus.getText(), tela.campoLimiteClasseDeus.getText());
 
 		if (tela.checkBoxEntidadeDeus.isSelected() && validacaoEntidadesDeusas != ValidacaoArquivoEnum.SUCESSO) {
-			tela.exibirMensagemAlerta(tela.arquivoMetricaBean.getMapValidations().get(validacaoEntidadesDeusas));
+			tela.exibirMensagemAlerta(validacaoEntidadesDeusas.getDescricao());
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class ListenerAnalisarArquivo implements ActionListener {
 		if (tela.campoDiretorio.getText().trim().equalsIgnoreCase(tela.arquivoAnteriorAnalisado)
 				&& tela.campoLimiteMetodoDeus.getText().trim().equals(tela.limiteMetodoDeusAnterior)
 				&& tela.campoLimiteClasseDeus.getText().trim().equals(tela.limiteClasseDeusAnterior)) {
-			tela.exibirMensagemInformativa(tela.arquivoMetricaBean.getMapValidations().get(ValidacaoArquivoEnum.ARQUIVO_ANALISADO));
+			tela.exibirMensagemInformativa(ValidacaoArquivoEnum.ARQUIVO_ANALISADO.getDescricao());
 			return false;
 		}
 

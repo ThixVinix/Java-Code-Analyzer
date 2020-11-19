@@ -19,6 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import actions.ListenerAnalisarArquivo;
 import actions.ListenerDefinirEntidadesDeus;
 import actions.ListenerExibirConteudoCompactado;
@@ -34,7 +37,9 @@ import utilitarios.Constante;
 
 public class TelaPesquisaArquivo extends JFrame {
 
+	private static final Logger LOGGER = LogManager.getLogger(TelaPesquisaArquivo.class.getName());
 	private static final long serialVersionUID = 5988972284355233140L;
+	
 	public JFileChooser choose = new JFileChooser(Constante.CURRENT_DIRETORY_PATH_C);
 	public JPanel frmAnaliseArquivo;
 	public JFrame frameAnterior;
@@ -71,6 +76,7 @@ public class TelaPesquisaArquivo extends JFrame {
 	 * Create the application.
 	 */
 	public TelaPesquisaArquivo(JFrame frameAnterior) {
+		LOGGER.info("Inicializando tela de análise por arquivo único");
 		this.arquivoMetricaBean = new ArquivoMetricaBean();
 		this.frameAnterior = frameAnterior;
 		setResizable(false);
@@ -79,7 +85,6 @@ public class TelaPesquisaArquivo extends JFrame {
 		limiteClasseDeusAnterior = "";
 		limiteMetodoDeusAnterior = "";
 		initialize();
-
 	}
 
 	/**
@@ -294,6 +299,7 @@ public class TelaPesquisaArquivo extends JFrame {
 		campoMetodoDeus = new JTextField();
 		campoMetodoDeus.setEditable(false);
 		campoMetodoDeus.setBounds(631, 694, 86, 32);
+		campoMetodoDeus.setDocument(new DocumentoCampoNumerico());
 		campoMetodoDeus.setColumns(10);
 		frmAnaliseArquivo.add(campoMetodoDeus);
 	}
@@ -302,6 +308,7 @@ public class TelaPesquisaArquivo extends JFrame {
 		campoClasseDeus = new JTextField();
 		campoClasseDeus.setEditable(false);
 		campoClasseDeus.setBounds(916, 694, 86, 32);
+		campoClasseDeus.setDocument(new DocumentoCampoNumerico());
 		campoClasseDeus.setColumns(10);
 		frmAnaliseArquivo.add(campoClasseDeus);
 	}
@@ -310,6 +317,7 @@ public class TelaPesquisaArquivo extends JFrame {
 		campoComentarios = new JTextField();
 		campoComentarios.setEditable(false);
 		campoComentarios.setBounds(916, 652, 86, 31);
+		campoComentarios.setDocument(new DocumentoCampoNumerico());
 		campoComentarios.setColumns(10);
 		frmAnaliseArquivo.add(campoComentarios);
 	}
@@ -318,6 +326,7 @@ public class TelaPesquisaArquivo extends JFrame {
 		campoMetodos = new JTextField();
 		campoMetodos.setEditable(false);
 		campoMetodos.setBounds(631, 652, 86, 31);
+		campoMetodos.setDocument(new DocumentoCampoNumerico());
 		campoMetodos.setColumns(10);
 		frmAnaliseArquivo.add(campoMetodos);
 	}
@@ -326,6 +335,7 @@ public class TelaPesquisaArquivo extends JFrame {
 		campoClasses = new JTextField();
 		campoClasses.setEditable(false);
 		campoClasses.setBounds(916, 611, 86, 29);
+		campoClasses.setDocument(new DocumentoCampoNumerico());
 		campoClasses.setColumns(10);
 		frmAnaliseArquivo.add(campoClasses);
 	}
@@ -334,6 +344,7 @@ public class TelaPesquisaArquivo extends JFrame {
 		campoLOC = new JTextField();
 		campoLOC.setEditable(false);
 		campoLOC.setBounds(631, 611, 86, 30);
+		campoLOC.setDocument(new DocumentoCampoNumerico());
 		campoLOC.setColumns(10);
 		frmAnaliseArquivo.add(campoLOC);
 	}
@@ -410,6 +421,8 @@ public class TelaPesquisaArquivo extends JFrame {
 
 	private void createTextAreaConteudo() {
 		textAreaConteudo = new TextArea();
+		textAreaConteudo.setForeground(Color.WHITE);
+		textAreaConteudo.setBackground(Color.BLACK);
 		textAreaConteudo.setEditable(false);
 		textAreaConteudo.setBounds(10, 213, 1144, 295);
 		frmAnaliseArquivo.add(textAreaConteudo);
